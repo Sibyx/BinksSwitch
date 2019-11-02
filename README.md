@@ -1,5 +1,8 @@
 # BinksSwitch
+
 Simple .NET based software switch for Windows implemented in C# using WPF
+
+![](docs/screenshots/MainWindow.jpg)
 
 ## Resources
 

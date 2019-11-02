@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:local="clr-namespace:BinksSwitch.UI"
         mc:Ignorable="d"
         Title="BinksSwitch" 
@@ -11,17 +12,55 @@
         >
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="90*"/>
         </Grid.RowDefinitions>
 
-        <Button 
-            Grid.Row="0" 
-            Width="50" 
-            Click="StartSwitchClick"
-            HorizontalAlignment="Left">
-            Start
-        </Button>
+        <StackPanel 
+            Grid.Row="0"
+            HorizontalAlignment="Left"
+            Orientation = "Horizontal">
+            <Button 
+                Width="30" 
+                Name="StartSwitchButton"
+                Click="StartSwitchClick">
+                <fa:ImageAwesome Icon="Play" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
+            </Button>
+            <Button 
+                Width="30" 
+                Name="StopSwitchButton"
+                IsEnabled="False"
+                Click="StopSwitchClick">
+                <fa:ImageAwesome Icon="Stop" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
+            </Button>
+        </StackPanel>
+
+        <StackPanel 
+            Grid.Row="0"
+            HorizontalAlignment="Right"
+            Orientation = "Horizontal">
+            <Button 
+                Width="30" 
+                Name="ClearCamButton"
+                Click="ClearCamClick">
+                <fa:ImageAwesome Icon="Refresh" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
+            </Button>
+            <Button 
+                Width="30"
+                Name="StatsButton"
+                IsEnabled="False"
+            >
+                <fa:ImageAwesome Icon="LineChart" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
+            </Button>
+            <Button 
+                Width="30"
+                Name="SettingsButton"
+                IsEnabled="False"
+                >
+                <fa:ImageAwesome Icon="Gears" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
+            </Button>
+        </StackPanel>
+
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -50,9 +89,9 @@
                 CanUserResizeColumns="False"
                 Name="CamTable">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="MAC Address" Binding="{Binding Value.PhysicalAddress}" Width="30*"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Device" Binding="{Binding Value.Device}" Width="60*"></DataGridTextColumn>
-                    <DataGridTextColumn Header="TTL" Binding="{Binding Value.TTL}" Width="10*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="MAC Address" Binding="{Binding PhysicalAddress}" Width="30*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Device" Binding="{Binding Device}" Width="60*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="TTL" Binding="{Binding TTL}" Width="10*"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

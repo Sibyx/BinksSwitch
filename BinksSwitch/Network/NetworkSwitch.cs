@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
+using BinksSwitch.Annotations;
 using BinksSwitch.Network.Entities;
 using PacketDotNet;
 using SharpPcap.WinPcap;
@@ -11,7 +14,7 @@ namespace BinksSwitch.Network
     public class NetworkSwitch
     {
         public List<Device> Devices { get; } = new List<Device>();
-        public Dictionary<string, CamRecord> CamTable { get; } = new Dictionary<string, CamRecord>();
+        public ConcurrentDictionary<string, CamRecord> CamTable { get; } = new ConcurrentDictionary<string, CamRecord>();
         public event EventHandler<EventArgs> CamChange = null;
 
         private readonly Timer _clock = new Timer(1000);
@@ -29,7 +32,7 @@ namespace BinksSwitch.Network
             }
 
             _clock.Elapsed += ClockTickEvent;
-            _clock.Start();
+
         }
 
         private void ClockTickEvent(object source, ElapsedEventArgs e)
@@ -43,7 +46,7 @@ namespace BinksSwitch.Network
             {
                 if (CamTable[physicalAddress].TimeToDie())
                 {
-                    CamTable.Remove(physicalAddress);
+                    CamTable.TryRemove(physicalAddress, out _);
                 }
             }
 
@@ -81,17 +84,36 @@ namespace BinksSwitch.Network
             }
             else
             {
-                CamTable.Add(eth.SourceHardwareAddress.ToString(), new CamRecord(senderDevice, eth.SourceHardwareAddress.ToString()));
+                CamTable.TryAdd(eth.SourceHardwareAddress.ToString(), new CamRecord(senderDevice, eth.SourceHardwareAddress.ToString()));
             }
         }
 
-        public void Exit()
+        public void Start([ItemCanBeNull] IList devices)
+        {
+            _clock.Start();
+
+            foreach (Device device in devices)
+            {
+                device?.Open();
+            }
+        }
+
+        public void Stop()
         {
             _clock.Stop();
+
             foreach (var device in Devices)
             {
                 device.Close();
             }
+
+            ClearCam();
+        }
+
+        public void ClearCam()
+        {
+            CamTable.Clear();
+            CamChange?.Invoke(this, null);
         }
     }
 }

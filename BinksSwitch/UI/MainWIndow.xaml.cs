@@ -2,16 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using BinksSwitch.Network.Entities;
 
 namespace BinksSwitch.UI
@@ -28,31 +19,44 @@ namespace BinksSwitch.UI
         {
             InitializeComponent();
             DeviceTable.DataContext = CurrentApp.SwitchInstance.Devices;
-            CamTable.DataContext = CurrentApp.SwitchInstance.CamTable;
+            CamTable.DataContext = CurrentApp.SwitchInstance.CamTable.Values.ToList();
 
             CurrentApp.SwitchInstance.CamChange += RefreshCamTable;
         }
 
         private void StartSwitchClick(object sender, RoutedEventArgs e)
         {
-            foreach (Device device in DeviceTable.SelectedItems)
-            {
-                device.Open();
-            }
+            StartSwitchButton.IsEnabled = false;
+            StopSwitchButton.IsEnabled = true;
+            
+            CurrentApp.SwitchInstance.Start(DeviceTable.SelectedItems);
         }
 
         private void RefreshCamTable(object sender, EventArgs eventArgs)
         {
             CurrentApp.Dispatcher?.Invoke(() =>
             {
-                CamTable.Items.Refresh();
+                CamTable.DataContext = CurrentApp.SwitchInstance.CamTable.Values.ToList();
             });
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            CurrentApp.SwitchInstance.Exit();
+            CurrentApp.SwitchInstance.Stop();
+        }
+
+        private void StopSwitchClick(object sender, RoutedEventArgs e)
+        {
+            StartSwitchButton.IsEnabled = true;
+            StopSwitchButton.IsEnabled = false;
+
+            CurrentApp.SwitchInstance.Stop();
+        }
+
+        private void ClearCamClick(object sender, RoutedEventArgs e)
+        {
+            CurrentApp.SwitchInstance.ClearCam();
         }
     }
 }
