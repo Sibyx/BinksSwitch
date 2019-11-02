@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Configuration;
 
 namespace BinksSwitch.Network.Entities
 {
@@ -51,7 +48,7 @@ namespace BinksSwitch.Network.Entities
         {
             this.Device = device;
             this.PhysicalAddress = physicalAddress;
-            this.TTL = 30;
+            this.TTL = Convert.ToInt32(ConfigurationManager.AppSettings["CamRecordTTL"]);
         }
 
         private void NotifyPropertyChanged(string propertyName)
@@ -64,7 +61,7 @@ namespace BinksSwitch.Network.Entities
             lock (_camLock)
             {
                 Device = device;
-                TTL = 30;
+                TTL = Convert.ToInt32(ConfigurationManager.AppSettings["CamRecordTTL"]);
             }
         }
 
