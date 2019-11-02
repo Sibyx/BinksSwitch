@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,17 +28,31 @@ namespace BinksSwitch.UI
         {
             InitializeComponent();
             DeviceTable.DataContext = CurrentApp.SwitchInstance.Devices;
+            CamTable.DataContext = CurrentApp.SwitchInstance.CamTable;
+
+            CurrentApp.SwitchInstance.CamChange += RefreshCamTable;
         }
 
         private void StartSwitchClick(object sender, RoutedEventArgs e)
         {
             foreach (Device device in DeviceTable.SelectedItems)
             {
-                if (device.Open())
-                {
-                    CurrentApp.SwitchInstance.ActiveDevices.Add(device);
-                }
+                device.Open();
             }
+        }
+
+        private void RefreshCamTable(object sender, EventArgs eventArgs)
+        {
+            CurrentApp.Dispatcher?.Invoke(() =>
+            {
+                CamTable.Items.Refresh();
+            });
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            CurrentApp.SwitchInstance.Exit();
         }
     }
 }

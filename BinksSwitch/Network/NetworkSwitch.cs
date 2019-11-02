@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Timers;
 using BinksSwitch.Network.Entities;
 using PacketDotNet;
 using SharpPcap.WinPcap;
@@ -9,9 +10,11 @@ namespace BinksSwitch.Network
 {
     public class NetworkSwitch
     {
-        public List<Device> ActiveDevices { get; set; } = new List<Device>();
         public List<Device> Devices { get; } = new List<Device>();
         public Dictionary<string, CamRecord> CamTable { get; } = new Dictionary<string, CamRecord>();
+        public event EventHandler<EventArgs> CamChange = null;
+
+        private readonly Timer _clock = new Timer(1000);
 
         public NetworkSwitch()
         {
@@ -19,8 +22,32 @@ namespace BinksSwitch.Network
 
             foreach (var device in devices)
             {
-                Devices.Add(new Device(device, PacketArrival));
+                if (device.Interface.FriendlyName != null)
+                {
+                    Devices.Add(new Device(device, PacketArrival));
+                }
             }
+
+            _clock.Elapsed += ClockTickEvent;
+            _clock.Start();
+        }
+
+        private void ClockTickEvent(object source, ElapsedEventArgs e)
+        {
+            if (CamTable.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var physicalAddress in CamTable.Keys.ToList())
+            {
+                if (CamTable[physicalAddress].TimeToDie())
+                {
+                    CamTable.Remove(physicalAddress);
+                }
+            }
+
+            CamChange?.Invoke(this, e);
         }
 
         private void PacketArrival(object sender, EthernetPacket eth)
@@ -39,7 +66,7 @@ namespace BinksSwitch.Network
             else
             {
 
-                foreach (var device in ActiveDevices)
+                foreach (var device in Devices.Where(device => device.IsOpened))
                 {
                     if (device.Name != senderDevice.Name)
                     {
@@ -54,16 +81,16 @@ namespace BinksSwitch.Network
             }
             else
             {
-                CamTable.Add(eth.SourceHardwareAddress.ToString(), new CamRecord(senderDevice));
+                CamTable.Add(eth.SourceHardwareAddress.ToString(), new CamRecord(senderDevice, eth.SourceHardwareAddress.ToString()));
             }
         }
 
         public void Exit()
         {
+            _clock.Stop();
             foreach (var device in Devices)
             {
                 device.Close();
-                ActiveDevices.Remove(device);
             }
         }
     }

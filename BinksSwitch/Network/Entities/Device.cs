@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using PacketDotNet;
 using SharpPcap;
@@ -6,15 +7,58 @@ using SharpPcap.WinPcap;
 
 namespace BinksSwitch.Network.Entities
 {
-    public class Device
+    public class Device : INotifyPropertyChanged
     {
-        public bool IsOpened { get; private set; }
-        public string Name { get; }
-        public int Sent { get; private set; }
-        public int Received { get; private set; }
-        private WinPcapDevice _captureDevice;
+        private bool _isOpened;
+        private string _name;
+        private int _sent;
+        private int _received;
+        private readonly WinPcapDevice _captureDevice;
 
+        public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<EthernetPacket> PacketReceived = null;
+
+        public bool IsOpened
+        {
+            get => _isOpened;
+            private set
+            {
+                _isOpened = value;
+                NotifyPropertyChanged("IsOpened");
+            }
+        }
+
+
+        public string Name
+        {
+            get => _name;
+            private set
+            {
+                _name = value;
+                NotifyPropertyChanged("Name");
+            }
+        }
+
+
+        public int Sent { 
+            get => _sent;
+            private set
+            {
+                _sent = value;
+                NotifyPropertyChanged("Sent");
+            }
+        }
+
+
+        public int Received
+        {
+            get => _received;
+            private set
+            {
+                _received = value;
+                NotifyPropertyChanged("Received");
+            }
+        }
 
         public Device(WinPcapDevice captureDevice, EventHandler<EthernetPacket> eventHandler)
         {
@@ -25,6 +69,11 @@ namespace BinksSwitch.Network.Entities
             this.Received = 0;
             this.Name = captureDevice.Interface.FriendlyName;
             this._captureDevice = captureDevice;
+        }
+
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public override string ToString()
@@ -84,6 +133,5 @@ namespace BinksSwitch.Network.Entities
 
             return false;
         }
-
     }
 }

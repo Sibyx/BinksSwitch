@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BinksSwitch.UI"
         mc:Ignorable="d"
-        Title="Binks Switcg" 
+        Title="BinksSwitch" 
         Height="300" 
         Width="700"
         >
@@ -36,10 +36,23 @@
                 CanUserResizeColumns="False"
                 Name="DeviceTable">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Opened"  Binding="{Binding IsOpened}" Width="15*"/>
-                    <DataGridTextColumn Header="Name"  Binding="{Binding Name}" Width="45*"/>
-                    <DataGridTextColumn Header="Sent"  Binding="{Binding Sent}" Width="15*"/>
-                    <DataGridTextColumn Header="Received"  Binding="{Binding Received}" Width="15*"/>
+                    <DataGridCheckBoxColumn Header="Running" Binding="{Binding Path=IsOpened, Mode=OneWay}" Width="15*"/>
+                    <DataGridTextColumn Header="Name"  Binding="{Binding Path=Name, Mode=OneWay}" Width="45*"/>
+                    <DataGridTextColumn Header="Sent"  Binding="{Binding Path=Sent, Mode=OneWay}" Width="15*"/>
+                    <DataGridTextColumn Header="Received"  Binding="{Binding Path=Received, Mode=OneWay}" Width="15*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <DataGrid
+                ItemsSource="{Binding}"
+                AutoGenerateColumns="False"
+                Grid.Column="1"
+                CanUserResizeColumns="False"
+                Name="CamTable">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="MAC Address" Binding="{Binding Value.PhysicalAddress}" Width="30*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Device" Binding="{Binding Value.Device}" Width="60*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="TTL" Binding="{Binding Value.TTL}" Width="10*"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
