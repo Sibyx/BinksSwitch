@@ -55,7 +55,7 @@
             <Button 
                 Width="30"
                 Name="SettingsButton"
-                IsEnabled="False"
+                Click="SettingsClick"
                 >
                 <fa:ImageAwesome Icon="Gears" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
             </Button>

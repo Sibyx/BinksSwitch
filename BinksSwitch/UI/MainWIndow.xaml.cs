@@ -58,5 +58,11 @@ namespace BinksSwitch.UI
         {
             CurrentApp.SwitchInstance.ClearCam();
         }
+
+        private void SettingsClick(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow settingsWindow = new SettingsWindow();
+            settingsWindow.ShowDialog();
+        }
     }
 }
