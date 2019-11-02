@@ -11,17 +11,33 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BinksSwitch.Network.Entities;
 
 namespace BinksSwitch.UI
 {
     /// <summary>
     /// Interaction logic for MainWIndow.xaml
     /// </summary>
-    public partial class MainWIndow : Window
+    public partial class MainWindow : Window
     {
-        public MainWIndow()
+        public static App CurrentApp => (App) Application.Current;
+
+
+        public MainWindow()
         {
             InitializeComponent();
+            DeviceTable.DataContext = CurrentApp.SwitchInstance.Devices;
+        }
+
+        private void StartSwitchClick(object sender, RoutedEventArgs e)
+        {
+            foreach (Device device in DeviceTable.SelectedItems)
+            {
+                if (device.Open())
+                {
+                    CurrentApp.SwitchInstance.ActiveDevices.Add(device);
+                }
+            }
         }
     }
 }
