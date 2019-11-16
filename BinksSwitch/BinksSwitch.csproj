@@ -119,6 +119,7 @@
     </Compile>
     <Compile Include="Network\Entities\CamRecord.cs" />
     <Compile Include="Network\Entities\Device.cs" />
+    <Compile Include="Network\Entities\SyslogMessage.cs" />
     <Compile Include="Network\NetworkSwitch.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UI\MainWindow.xaml.cs">

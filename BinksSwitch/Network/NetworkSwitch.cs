@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Configuration;
 using System.Timers;
 using BinksSwitch.Annotations;
 using BinksSwitch.Network.Entities;
@@ -48,7 +49,13 @@ namespace BinksSwitch.Network
                 if (CamTable[physicalAddress].TimeToDie())
                 {
                     CamTable.TryRemove(physicalAddress, out _);
+                    this.Log(new SyslogMessage(Severity.Debug, $"{physicalAddress} expired in CAM"));
                 }
+            }
+
+            if (CamTable.Count == 0)
+            {
+                this.Log(new SyslogMessage(Severity.Alert, "CAM table is empty"));
             }
 
             CamChange?.Invoke(this, e);
@@ -81,10 +88,16 @@ namespace BinksSwitch.Network
 
             if (CamTable.ContainsKey(eth.SourceHardwareAddress.ToString()))
             {
+                var record = CamTable[eth.SourceHardwareAddress.ToString()];
+                if (senderDevice != record.Device)
+                {
+                    this.Log(new SyslogMessage(Severity.Warning, $"{eth.SourceHardwareAddress} changed from {record.Device} to {senderDevice}"));
+                }
                 CamTable[eth.SourceHardwareAddress.ToString()].Refresh(senderDevice);
             }
             else
             {
+                this.Log(new SyslogMessage(Severity.Informational, $"New CAM record for {eth.SourceHardwareAddress} on {senderDevice}"));
                 CamTable.TryAdd(eth.SourceHardwareAddress.ToString(), new CamRecord(senderDevice, eth.SourceHardwareAddress.ToString()));
             }
         }
@@ -97,6 +110,8 @@ namespace BinksSwitch.Network
             {
                 device?.Open();
             }
+
+            this.Log(new SyslogMessage(Severity.Notice, "BinksSwitch started! Mesa Jar Jar Binks."));
         }
 
         public void Stop()
@@ -109,12 +124,25 @@ namespace BinksSwitch.Network
             }
 
             ClearCam();
+
+            this.Log(new SyslogMessage(Severity.Notice, "BinksSwitch stopped! Ouch! Ouch!"));
         }
 
         public void ClearCam()
         {
             CamTable.Clear();
             CamChange?.Invoke(this, null);
+            this.Log(new SyslogMessage(Severity.Alert, "CAM table have been manually flushed"));
+        }
+
+        private void Log(SyslogMessage message)
+        {
+            foreach (var device in Devices.Where(device => device.IsOpened))
+            {
+                device.Broadcast(message);
+            }
+
+            Console.WriteLine(message);
         }
     }
 }

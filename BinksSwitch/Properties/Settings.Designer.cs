@@ -50,24 +50,57 @@ namespace BinksSwitch.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("192.168.2.42")]
-        public string SyslogDeviceID {
+        public string SyslogDeviceIP {
             get {
-                return ((string)(this["SyslogDeviceID"]));
+                return ((string)(this["SyslogDeviceIP"]));
             }
             set {
-                this["SyslogDeviceID"] = value;
+                this["SyslogDeviceIP"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.2.20")]
         public string SyslogServer {
             get {
                 return ((string)(this["SyslogServer"]));
             }
             set {
                 this["SyslogServer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4242")]
+        public ushort SyslogDevicePort {
+            get {
+                return ((ushort)(this["SyslogDevicePort"]));
+            }
+            set {
+                this["SyslogDevicePort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("BinksSwitch")]
+        public string AppName {
+            get {
+                return ((string)(this["AppName"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("514")]
+        public ushort SyslogServerPort {
+            get {
+                return ((ushort)(this["SyslogServerPort"]));
+            }
+            set {
+                this["SyslogServerPort"] = value;
             }
         }
     }

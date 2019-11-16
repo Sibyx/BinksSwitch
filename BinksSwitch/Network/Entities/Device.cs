@@ -133,5 +133,21 @@ namespace BinksSwitch.Network.Entities
 
             return false;
         }
+
+        public bool Broadcast(IPv4Packet payload)
+        {
+            if (!IsOpened)
+                return false;
+
+            var ethernetDestinationHwAddress = System.Net.NetworkInformation.PhysicalAddress.Parse("FF-FF-FF-FF-FF-FF");
+            var ethernetPacket = new EthernetPacket(this._captureDevice.MacAddress,
+                ethernetDestinationHwAddress,
+                EthernetType.None) {PayloadPacket = payload};
+
+            _captureDevice.SendPacket(ethernetPacket.Bytes);
+            Sent++;
+
+            return true;
+        }
     }
 }
