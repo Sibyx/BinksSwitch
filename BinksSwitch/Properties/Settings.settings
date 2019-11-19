@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="BinksSwitch.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="SwitchClockRate" Type="System.Double" Scope="User">
+    <Setting Name="SwitchClockRate" Type="System.UInt32" Scope="User">
       <Value Profile="(Default)">1000</Value>
     </Setting>
     <Setting Name="CamRecordTTL" Type="System.UInt32" Scope="User">

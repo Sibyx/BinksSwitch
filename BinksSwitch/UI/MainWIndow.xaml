@@ -9,6 +9,7 @@
         Title="BinksSwitch" 
         Height="400" 
         Width="700"
+        WindowStartupLocation="CenterScreen"
         >
     <Grid>
         <Grid.RowDefinitions>
@@ -96,19 +97,21 @@
                 AutoGenerateColumns="False" 
                 CanUserResizeColumns="False"
                 Name="StatisticsTable">
+                
                 <DataGrid.Resources>
                     <local:StatisticsConverter x:Key="StatsRecordConverter" />
                 </DataGrid.Resources>
+                
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Device" Binding="{Binding Path=Name, Mode=OneWay}" Width="15*"/>
-                    <DataGridTextColumn Header="TCP"  Binding="{Binding Path=Statistics[TCP], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
-                    <DataGridTextColumn Header="UDP"  Binding="{Binding Path=Statistics[UDP], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
-                    <DataGridTextColumn Header="ICMPv4"  Binding="{Binding Path=Statistics[ICMPv4], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
-                    <DataGridTextColumn Header="ICMPv6"  Binding="{Binding Path=Statistics[ICMPv6], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
-                    <DataGridTextColumn Header="IPv4"  Binding="{Binding Path=Statistics[IPv4], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
-                    <DataGridTextColumn Header="IPv6"  Binding="{Binding Path=Statistics[IPv6], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
-                    <DataGridTextColumn Header="ARP"  Binding="{Binding Path=Statistics[ARP], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
-                    <DataGridTextColumn Header="LLDP"  Binding="{Binding Path=Statistics[LLDP], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
+                    <DataGridTextColumn Header="TCP" Binding="{Binding Path=Statistics[TCP], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
+                    <DataGridTextColumn Header="UDP" Binding="{Binding Path=Statistics[UDP], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
+                    <DataGridTextColumn Header="ICMPv4" Binding="{Binding Path=Statistics[ICMPv4], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
+                    <DataGridTextColumn Header="ICMPv6" Binding="{Binding Path=Statistics[ICMPv6], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
+                    <DataGridTextColumn Header="IPv4" Binding="{Binding Path=Statistics[IPv4], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
+                    <DataGridTextColumn Header="IPv6" Binding="{Binding Path=Statistics[IPv6], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
+                    <DataGridTextColumn Header="ARP" Binding="{Binding Path=Statistics[ARP], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
+                    <DataGridTextColumn Header="LLDP" Binding="{Binding Path=Statistics[LLDP], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

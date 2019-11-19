@@ -26,9 +26,9 @@ namespace BinksSwitch.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1000")]
-        public double SwitchClockRate {
+        public uint SwitchClockRate {
             get {
-                return ((double)(this["SwitchClockRate"]));
+                return ((uint)(this["SwitchClockRate"]));
             }
             set {
                 this["SwitchClockRate"] = value;

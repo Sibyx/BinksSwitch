@@ -4,36 +4,53 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BinksSwitch.UI"
+        xmlns:properties="clr-namespace:BinksSwitch.Properties"
         mc:Ignorable="d"
-        Title="Settings - BinksSwitch" Height="300" Width="250">
+        Title="Settings - BinksSwitch" 
+        Height="470"
+        Width="450"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="90*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        
-        <StackPanel 
-            Grid.Row="0"
-            Orientation = "Vertical"
-        >
-        </StackPanel>
 
-        <Button 
-            Grid.Row="1"
-            Width="50"
-            Name="CloseButton"
-            HorizontalAlignment="Left"
-            Click="CloseClick"
-        >
-            Close
-        </Button>
-        <Button 
-            Grid.Row="1"
-            Width="50" 
-            Name="SaveButton"
-            HorizontalAlignment="Right"
-        >
-            Save
-        </Button>
+        <Border 
+            Grid.Row="0"
+            Padding="5"
+            >
+            <StackPanel 
+                Orientation = "Vertical"
+            >
+                <TextBlock Padding="5">Application name</TextBlock>
+                <TextBox Name="AppNameText" Padding="5" Text="{Binding Source={x:Static properties:Settings.Default}, Path=AppName, Mode=OneWay}"/>
+
+                <TextBlock Padding="5">Clock rate</TextBlock>
+                <TextBox Name="SwitchClockRateText" Padding="5" Text="{Binding Source={x:Static properties:Settings.Default}, Path=SwitchClockRate, Mode=OneWay}"/>
+
+                <TextBlock Padding="5">Cam record TTL</TextBlock>
+                <TextBox Name="CamRecordTtlText" Padding="5" Text="{Binding Source={x:Static properties:Settings.Default}, Path=CamRecordTTL, Mode=OneWay}"/>
+
+                <TextBlock Padding="5">Syslog device IP</TextBlock>
+                <TextBox Name="SyslogDeviceIpText"  Padding="5" Text="{Binding Source={x:Static properties:Settings.Default}, Path=SyslogDeviceIP, Mode=OneWay}"/>
+
+                <TextBlock Padding="5">Syslog server</TextBlock>
+                <TextBox Name="SyslogServerText" Padding="5" Text="{Binding Source={x:Static properties:Settings.Default}, Path=SyslogServer, Mode=OneWay}"/>
+
+                <TextBlock Padding="5">Syslog server port</TextBlock>
+                <TextBox Name="SyslogServerPortText" Padding="5" Margin="0,0,0,10" Text="{Binding Source={x:Static properties:Settings.Default}, Path=SyslogServerPort, Mode=OneWay}"/>
+
+                <Button 
+                    Name="SaveButton"
+                    Padding="8"
+                    Click="SaveClick"
+                >
+                    Save
+                </Button>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>
