@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Configuration;
 using System.Timers;
 using BinksSwitch.Annotations;
 using BinksSwitch.Network.Entities;
@@ -16,7 +15,7 @@ namespace BinksSwitch.Network
     {
         public List<Device> Devices { get; } = new List<Device>();
         public ConcurrentDictionary<string, CamRecord> CamTable { get; } = new ConcurrentDictionary<string, CamRecord>();
-        public event EventHandler<EventArgs> CamChange = null;
+        public event EventHandler<EventArgs> CamChange;
 
         private readonly Timer _clock = new Timer(Properties.Settings.Default.SwitchClockRate);
 

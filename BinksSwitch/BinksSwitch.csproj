@@ -72,6 +72,9 @@
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FontAwesome.WPF, Version=4.7.0.37774, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
       <HintPath>..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
@@ -119,6 +122,7 @@
     </Compile>
     <Compile Include="Network\Entities\CamRecord.cs" />
     <Compile Include="Network\Entities\Device.cs" />
+    <Compile Include="Network\Entities\Direction.cs" />
     <Compile Include="Network\Entities\SyslogMessage.cs" />
     <Compile Include="Network\NetworkSwitch.cs" />
     <Compile Include="Properties\Annotations.cs" />

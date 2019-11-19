@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using PacketDotNet;
@@ -14,9 +15,60 @@ namespace BinksSwitch.Network.Entities
         private int _sent;
         private int _received;
         private readonly WinPcapDevice _captureDevice;
+        private Dictionary<string, Dictionary<Direction, ulong>> _statistics = new Dictionary<string, Dictionary<Direction, ulong>>
+        {
+            {"TCP", new Dictionary<Direction, ulong>() 
+                {
+                    {Direction.In, 0 },
+                    {Direction.Out, 0 }
+                }
+            },
+            {"UDP", new Dictionary<Direction, ulong>()
+                {
+                    {Direction.In, 0 },
+                    {Direction.Out, 0 }
+                }
+            },
+            {"ICMPv4", new Dictionary<Direction, ulong>()
+                {
+                    {Direction.In, 0 },
+                    {Direction.Out, 0 }
+                }
+            },
+            {"ICMPv6", new Dictionary<Direction, ulong>()
+                {
+                    {Direction.In, 0 },
+                    {Direction.Out, 0 }
+                }
+            },
+            {"IPv4", new Dictionary<Direction, ulong>()
+                {
+                    {Direction.In, 0 },
+                    {Direction.Out, 0 }
+                }
+            },
+            {"IPv6", new Dictionary<Direction, ulong>()
+                {
+                    {Direction.In, 0 },
+                    {Direction.Out, 0 }
+                }
+            },
+            {"ARP", new Dictionary<Direction, ulong>()
+                {
+                    {Direction.In, 0 },
+                    {Direction.Out, 0 }
+                }
+            },
+            {"LLDP", new Dictionary<Direction, ulong>()
+                {
+                    {Direction.In, 0 },
+                    {Direction.Out, 0 }
+                }
+            }
+    };
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public event EventHandler<EthernetPacket> PacketReceived = null;
+        public event EventHandler<EthernetPacket> PacketReceived;
 
         public bool IsOpened
         {
@@ -117,8 +169,9 @@ namespace BinksSwitch.Network.Entities
             if (packet is EthernetPacket)
             {
                 EthernetPacket eth = (EthernetPacket) packet;
-                Task.Run((() => { PacketReceived.Invoke(this, eth); }));
+                Task.Run((() => { PacketReceived?.Invoke(this, eth); }));
                 Received++;
+                //this.ProcessStatistics(Direction.In, eth);
             }
         }
 
@@ -128,6 +181,7 @@ namespace BinksSwitch.Network.Entities
             {
                 _captureDevice.SendPacket(eth.Bytes);
                 Sent++;
+                //this.ProcessStatistics(Direction.Out, eth);
                 return true;
             }
 
@@ -149,5 +203,49 @@ namespace BinksSwitch.Network.Entities
 
             return true;
         }
+
+        private void ProcessStatistics(Direction direction, EthernetPacket packet)
+        {
+            if (packet.Extract<TcpPacket>() != null)
+            {
+                _statistics["TCP"][direction]++;
+            }
+
+            if (packet.Extract<UdpPacket>() != null)
+            {
+                _statistics["UDP"][direction]++;
+            }
+
+            if (packet.Extract<IcmpV4Packet>() != null)
+            {
+                _statistics["ICMPv4"][direction]++;
+            }
+
+            if (packet.Extract<IcmpV6Packet>() != null)
+            {
+                _statistics["ICMPv6"][direction]++;
+            }
+
+            if (packet.Extract<IPv4Packet>() != null)
+            {
+                _statistics["IPv4"][direction]++;
+            }
+
+            if (packet.Extract<IPv6Packet>() != null)
+            {
+                _statistics["ICMPv6"][direction]++;
+            }
+
+            if (packet.Extract<ArpPacket>() != null)
+            {
+                _statistics["ARP"][direction]++;
+            }
+
+            if (packet.Extract<LldpPacket>() != null)
+            {
+                _statistics["LLDP"][direction]++;
+            }
+        }
+
     }
 }

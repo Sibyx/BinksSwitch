@@ -7,13 +7,14 @@
         xmlns:local="clr-namespace:BinksSwitch.UI"
         mc:Ignorable="d"
         Title="BinksSwitch" 
-        Height="300" 
+        Height="400" 
         Width="700"
         >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="90*"/>
+            <RowDefinition Height="45*"/>
+            <RowDefinition Height="45*"/>
         </Grid.RowDefinitions>
 
         <StackPanel 
@@ -92,6 +93,21 @@
                     <DataGridTextColumn Header="MAC Address" Binding="{Binding PhysicalAddress}" Width="30*"></DataGridTextColumn>
                     <DataGridTextColumn Header="Device" Binding="{Binding Device}" Width="60*"></DataGridTextColumn>
                     <DataGridTextColumn Header="TTL" Binding="{Binding TTL}" Width="10*"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <DataGrid 
+                ItemsSource="{Binding}" 
+                AutoGenerateColumns="False" 
+                CanUserResizeColumns="False"
+                Name="StatisticsTable">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Header="Running" Binding="{Binding Path=IsOpened, Mode=OneWay}" Width="15*"/>
+                    <DataGridTextColumn Header="Name"  Binding="{Binding Path=Name, Mode=OneWay}" Width="45*"/>
+                    <DataGridTextColumn Header="Sent"  Binding="{Binding Path=Sent, Mode=OneWay}" Width="15*"/>
+                    <DataGridTextColumn Header="Received"  Binding="{Binding Path=Received, Mode=OneWay}" Width="15*"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
