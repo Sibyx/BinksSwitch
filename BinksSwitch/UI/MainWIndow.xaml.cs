@@ -30,6 +30,8 @@ namespace BinksSwitch.UI
             StopSwitchButton.IsEnabled = true;
             
             CurrentApp.SwitchInstance.Start(DeviceTable.SelectedItems);
+
+            StatisticsTable.DataContext = CurrentApp.SwitchInstance.Devices.Where(device => device.IsOpened);
         }
 
         private void RefreshCamTable(object sender, EventArgs eventArgs)

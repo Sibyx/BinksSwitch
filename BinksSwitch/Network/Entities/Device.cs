@@ -15,7 +15,53 @@ namespace BinksSwitch.Network.Entities
         private int _sent;
         private int _received;
         private readonly WinPcapDevice _captureDevice;
-        private Dictionary<string, Dictionary<Direction, ulong>> _statistics = new Dictionary<string, Dictionary<Direction, ulong>>
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler<EthernetPacket> PacketReceived;
+
+        public bool IsOpened
+        {
+            get => _isOpened;
+            private set
+            {
+                _isOpened = value;
+                NotifyPropertyChanged("IsOpened");
+            }
+        }
+
+
+        public string Name
+        {
+            get => _name;
+            private set
+            {
+                _name = value;
+                NotifyPropertyChanged("Name");
+            }
+        }
+
+
+        public int Sent { 
+            get => _sent;
+            private set
+            {
+                _sent = value;
+                NotifyPropertyChanged("Sent");
+            }
+        }
+
+
+        public int Received
+        {
+            get => _received;
+            private set
+            {
+                _received = value;
+                NotifyPropertyChanged("Received");
+            }
+        }
+
+        public Dictionary<string, Dictionary<Direction, ulong>> Statistics { get; } = new Dictionary<string, Dictionary<Direction, ulong>>
         {
             {"TCP", new Dictionary<Direction, ulong>() 
                 {
@@ -65,52 +111,7 @@ namespace BinksSwitch.Network.Entities
                     {Direction.Out, 0 }
                 }
             }
-    };
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public event EventHandler<EthernetPacket> PacketReceived;
-
-        public bool IsOpened
-        {
-            get => _isOpened;
-            private set
-            {
-                _isOpened = value;
-                NotifyPropertyChanged("IsOpened");
-            }
-        }
-
-
-        public string Name
-        {
-            get => _name;
-            private set
-            {
-                _name = value;
-                NotifyPropertyChanged("Name");
-            }
-        }
-
-
-        public int Sent { 
-            get => _sent;
-            private set
-            {
-                _sent = value;
-                NotifyPropertyChanged("Sent");
-            }
-        }
-
-
-        public int Received
-        {
-            get => _received;
-            private set
-            {
-                _received = value;
-                NotifyPropertyChanged("Received");
-            }
-        }
+        };
 
         public Device(WinPcapDevice captureDevice, EventHandler<EthernetPacket> eventHandler)
         {
@@ -171,7 +172,7 @@ namespace BinksSwitch.Network.Entities
                 EthernetPacket eth = (EthernetPacket) packet;
                 Task.Run((() => { PacketReceived?.Invoke(this, eth); }));
                 Received++;
-                //this.ProcessStatistics(Direction.In, eth);
+                this.ProcessStatistics(Direction.In, eth);
             }
         }
 
@@ -181,7 +182,7 @@ namespace BinksSwitch.Network.Entities
             {
                 _captureDevice.SendPacket(eth.Bytes);
                 Sent++;
-                //this.ProcessStatistics(Direction.Out, eth);
+                this.ProcessStatistics(Direction.Out, eth);
                 return true;
             }
 
@@ -208,43 +209,45 @@ namespace BinksSwitch.Network.Entities
         {
             if (packet.Extract<TcpPacket>() != null)
             {
-                _statistics["TCP"][direction]++;
+                Statistics["TCP"][direction]++;
             }
 
             if (packet.Extract<UdpPacket>() != null)
             {
-                _statistics["UDP"][direction]++;
+                Statistics["UDP"][direction]++;
             }
 
             if (packet.Extract<IcmpV4Packet>() != null)
             {
-                _statistics["ICMPv4"][direction]++;
+                Statistics["ICMPv4"][direction]++;
             }
 
             if (packet.Extract<IcmpV6Packet>() != null)
             {
-                _statistics["ICMPv6"][direction]++;
+                Statistics["ICMPv6"][direction]++;
             }
 
             if (packet.Extract<IPv4Packet>() != null)
             {
-                _statistics["IPv4"][direction]++;
+                Statistics["IPv4"][direction]++;
             }
 
             if (packet.Extract<IPv6Packet>() != null)
             {
-                _statistics["ICMPv6"][direction]++;
+                Statistics["ICMPv6"][direction]++;
             }
 
             if (packet.Extract<ArpPacket>() != null)
             {
-                _statistics["ARP"][direction]++;
+                Statistics["ARP"][direction]++;
             }
 
             if (packet.Extract<LldpPacket>() != null)
             {
-                _statistics["LLDP"][direction]++;
+                Statistics["LLDP"][direction]++;
             }
+
+            NotifyPropertyChanged("Statistics");
         }
 
     }
