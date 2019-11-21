@@ -1,3 +1,7 @@
+## 0.3.0 : 21.11.2019
+
+- **Feature**: Firewall
+
 ## 0.2.0 : 19.11.2019
 
 - **Feature**: Change settings using `SettingsWindow`
