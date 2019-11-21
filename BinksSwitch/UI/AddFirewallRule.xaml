@@ -1,0 +1,70 @@
+﻿<Window x:Class="BinksSwitch.UI.AddFirewallRule"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="New firewall rule - BinkSwitch" 
+        Height="580" 
+        Width="450"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+>
+    <Grid>
+        <StackPanel 
+            Orientation = "Vertical"
+            Margin="5"
+        >
+            <TextBlock Padding="5">Operation</TextBlock>
+            <ComboBox Padding="5" Name="OperationComboBox">
+                <ComboBoxItem Tag="0" IsSelected="True">Deny</ComboBoxItem>
+                <ComboBoxItem Tag="1">Permit</ComboBoxItem>
+            </ComboBox>
+
+            <TextBlock Padding="5">Direction</TextBlock>
+            <ComboBox Padding="5" Name="DirectionComboBox">
+                <ComboBoxItem Tag="0">In</ComboBoxItem>
+                <ComboBoxItem Tag="1">Out</ComboBoxItem>
+            </ComboBox>
+
+            <TextBlock Padding="5">Protocol</TextBlock>
+            <ComboBox Padding="5" Name="ProtocolComboBox">
+                <ComboBoxItem Tag="0">TCP</ComboBoxItem>
+                <ComboBoxItem Tag="1">UDP</ComboBoxItem>
+                <ComboBoxItem Tag="2">ICMPv4</ComboBoxItem>
+                <ComboBoxItem Tag="3">ICMPv6</ComboBoxItem>
+                <ComboBoxItem Tag="4">IPv4</ComboBoxItem>
+                <ComboBoxItem Tag="5">IPv6</ComboBoxItem>
+                <ComboBoxItem Tag="6">ARP</ComboBoxItem>
+                <ComboBoxItem Tag="7">LLDP</ComboBoxItem>
+            </ComboBox>
+
+            <TextBlock Padding="5">Source MAC</TextBlock>
+            <TextBox Name="SourceMacTextBox" Padding="5"/>
+
+            <TextBlock Padding="5">Source IP</TextBlock>
+            <TextBox Name="SourceIpTextBox" Padding="5"/>
+
+            <TextBlock Padding="5">Destination MAC</TextBlock>
+            <TextBox Name="DestinationMacTextBox" Padding="5"/>
+
+            <TextBlock Padding="5">Destination IP</TextBlock>
+            <TextBox Name="DestinationIpTextBox" Padding="5"/>
+
+            <TextBlock Padding="5">Source Port</TextBlock>
+            <TextBox Name="SourcePortTextBox" Padding="5"/>
+
+            <TextBlock Padding="5">Destination Port</TextBlock>
+            <TextBox Name="DestinationPortTextBox" Padding="5" Margin="0,0,0,10"/>
+
+            <Button 
+                Name="AddButton"
+                Padding="8"
+                Click="AddClick"
+            >
+                Save
+            </Button>
+
+        </StackPanel>
+    </Grid>
+</Window>

@@ -64,13 +64,26 @@ namespace BinksSwitch.Network
         {
             var senderDevice = (Device) sender;
 
+            if (!senderDevice.PassedFirewallRules(Direction.In, eth))
+            {
+                this.Log(new SyslogMessage(Severity.Debug, $"Packet thrown away by firewall on input"));
+                return;
+            }
+
             if (CamTable.ContainsKey(eth.DestinationHardwareAddress.ToString()))
             {
                 var record = CamTable[eth.DestinationHardwareAddress.ToString()];
 
                 if (record.Device.Name != senderDevice.Name)
                 {
-                    record.Device.SendPacket(eth);
+                    if (record.Device.PassedFirewallRules(Direction.Out, eth))
+                    {
+                        record.Device.SendPacket(eth);
+                    }
+                    else
+                    {
+                        this.Log(new SyslogMessage(Severity.Debug, $"Packet thrown away by firewall on output"));
+                    }
                 }
             }
             else
@@ -80,7 +93,14 @@ namespace BinksSwitch.Network
                 {
                     if (device.Name != senderDevice.Name)
                     {
-                        device.SendPacket(eth);
+                        if (device.PassedFirewallRules(Direction.Out, eth))
+                        {
+                            device.SendPacket(eth);
+                        }
+                        else
+                        {
+                            this.Log(new SyslogMessage(Severity.Debug, $"Packet thrown away by firewall on output"));
+                        }
                     }
                 }
             }

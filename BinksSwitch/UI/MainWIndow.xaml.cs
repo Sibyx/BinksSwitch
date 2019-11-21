@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using BinksSwitch.Network.Entities;
 
 namespace BinksSwitch.UI
@@ -10,7 +11,7 @@ namespace BinksSwitch.UI
     /// <summary>
     /// Interaction logic for MainWIndow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public static App CurrentApp => (App) Application.Current;
 
@@ -63,8 +64,18 @@ namespace BinksSwitch.UI
 
         private void SettingsClick(object sender, RoutedEventArgs e)
         {
-            SettingsWindow settingsWindow = new SettingsWindow();
+            var settingsWindow = new SettingsWindow();
             settingsWindow.ShowDialog();
+        }
+
+        private void DeviceRecordDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (sender != null)
+            {
+                var row = sender as DataGridRow;
+                var firewallWindow = new FirewallWindow(row?.DataContext as Device);
+                firewallWindow.ShowDialog();
+            }
         }
     }
 }

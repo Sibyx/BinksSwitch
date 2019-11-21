@@ -1,0 +1,65 @@
+﻿<Window x:Class="BinksSwitch.UI.FirewallWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        mc:Ignorable="d"
+        Height="450" 
+        Width="900"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="45*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Name="DeviceNameText" Padding="5" FontWeight="Bold" FontSize="15">Device Name</TextBlock>
+
+        <DataGrid 
+            ItemsSource="{Binding}" 
+            AutoGenerateColumns="False"
+            Grid.Row="1" 
+            CanUserResizeColumns="False"
+            Name="FirewallRulesTable"
+            IsReadOnly="True"
+            SelectionUnit="FullRow"
+            CanUserReorderColumns="False"
+        >
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <EventSetter Event="MouseDoubleClick" Handler="RemoveFirewallRuleClick"/>
+                </Style>
+            </DataGrid.RowStyle>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Operation" CanUserSort="False" Binding="{Binding Path=RuleOperation, Mode=OneWay}" Width="10*"/>
+                <DataGridTextColumn Header="Direction" CanUserSort="False" Binding="{Binding Path=RuleDirection, Mode=OneWay}" Width="10*"/>
+                <DataGridTextColumn Header="Source MAC" CanUserSort="False" Binding="{Binding Path=SourceMac, Mode=OneWay}" Width="15*"/>
+                <DataGridTextColumn Header="Source IP" CanUserSort="False" Binding="{Binding Path=SourceIp, Mode=OneWay}" Width="15*"/>
+                <DataGridTextColumn Header="Destination MAC" CanUserSort="False" Binding="{Binding Path=DestinationMac, Mode=OneWay}" Width="15*"/>
+                <DataGridTextColumn Header="Destination IP" CanUserSort="False" Binding="{Binding Path=DestinationIp, Mode=OneWay}" Width="15*"/>
+                <DataGridTextColumn Header="Protocol" CanUserSort="False" Binding="{Binding Path=RuleProtocol, Mode=OneWay}" Width="10*"/>
+                <DataGridTextColumn Header="Source Port" CanUserSort="False" Binding="{Binding Path=SourcePort, Mode=OneWay}" Width="15*"/>
+                <DataGridTextColumn Header="Destination Port" CanUserSort="False" Binding="{Binding Path=DestinationPort, Mode=OneWay}" Width="15*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel 
+            Grid.Row="2"
+            HorizontalAlignment="Right"
+            Orientation = "Horizontal"
+            Margin="5"
+            >
+            <Button 
+                Width="100" 
+                Name="AddRowButton"
+                Click="AddRowClick">
+                <fa:ImageAwesome Icon="Plus" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -3,7 +3,6 @@
     public enum Direction
     {
         In,
-        Out,
-        Both
+        Out
     }
 }

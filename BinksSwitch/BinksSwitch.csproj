@@ -123,16 +123,24 @@
     <Compile Include="Network\Entities\CamRecord.cs" />
     <Compile Include="Network\Entities\Device.cs" />
     <Compile Include="Network\Entities\Direction.cs" />
+    <Compile Include="Network\Entities\FirewallRule.cs" />
+    <Compile Include="Network\Entities\Protocol.cs" />
     <Compile Include="Network\Entities\SyslogMessage.cs" />
     <Compile Include="Network\NetworkSwitch.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="UI\AddFirewallRule.xaml.cs">
+      <DependentUpon>AddFirewallRule.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FirewallWindow.xaml.cs">
+      <DependentUpon>FirewallWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\StatisticsConverter.cs" />
+    <Compile Include="UI\Converters\StatisticsConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -175,6 +183,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UI\AddFirewallRule.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\FirewallWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

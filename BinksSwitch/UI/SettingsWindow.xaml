@@ -3,25 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BinksSwitch.UI"
         xmlns:properties="clr-namespace:BinksSwitch.Properties"
         mc:Ignorable="d"
         Title="Settings - BinksSwitch" 
-        Height="470"
+        Height="420"
         Width="450"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         >
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="90*"/>
-            <RowDefinition Height="20"/>
-        </Grid.RowDefinitions>
-
         <Border 
-            Grid.Row="0"
             Padding="5"
-            >
+        >
             <StackPanel 
                 Orientation = "Vertical"
             >

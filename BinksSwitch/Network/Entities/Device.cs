@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using PacketDotNet;
 using SharpPcap;
@@ -112,6 +113,7 @@ namespace BinksSwitch.Network.Entities
                 }
             }
         };
+        public List<FirewallRule> FirewallRules = new List<FirewallRule>();
 
         public Device(WinPcapDevice captureDevice, EventHandler<EthernetPacket> eventHandler)
         {
@@ -154,7 +156,6 @@ namespace BinksSwitch.Network.Entities
             if (IsOpened)
             {
                 _captureDevice.StopCapture();
-                Console.WriteLine(_captureDevice.Statistics.ToString());
                 _captureDevice.Close();
                 IsOpened = false;
                 return true;
@@ -167,12 +168,21 @@ namespace BinksSwitch.Network.Entities
         {
             var packet = Packet.ParsePacket(LinkLayers.Ethernet, e.Packet.Data);
 
-            if (packet is EthernetPacket)
+            if (packet is EthernetPacket eth)
             {
-                EthernetPacket eth = (EthernetPacket) packet;
-                Task.Run((() => { PacketReceived?.Invoke(this, eth); }));
-                Received++;
-                this.ProcessStatistics(Direction.In, eth);
+                Task.Run((() => 
+                {
+                    PacketReceived?.Invoke(this, eth);
+                }));
+
+                Task.Run((() =>
+                {
+                    if (this.PassedFirewallRules(Direction.In, eth))
+                    {
+                        Received++;
+                        this.ProcessStatistics(Direction.In, eth);
+                    }
+                }));
             }
         }
 
@@ -203,6 +213,21 @@ namespace BinksSwitch.Network.Entities
             Sent++;
 
             return true;
+        }
+
+        public bool PassedFirewallRules(Direction direction, EthernetPacket packet)
+        {
+            var passed = true;
+
+            foreach (var rule in FirewallRules.Where(rule => rule.RuleDirection == null || direction.Equals(rule.RuleDirection) ))
+            {
+                if (rule.IsMatch(packet))
+                {
+                    passed = rule.RuleOperation.Equals(FirewallRule.Operation.Permit);
+                }
+            }
+
+            return passed;
         }
 
         private void ProcessStatistics(Direction direction, EthernetPacket packet)

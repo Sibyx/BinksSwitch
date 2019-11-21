@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
-        xmlns:local="clr-namespace:BinksSwitch.UI"
+        xmlns:converters="clr-namespace:BinksSwitch.UI.Converters"
         mc:Ignorable="d"
         Title="BinksSwitch" 
         Height="400" 
@@ -13,7 +13,7 @@
         >
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="45*"/>
             <RowDefinition Height="45*"/>
         </Grid.RowDefinitions>
@@ -21,11 +21,15 @@
         <StackPanel 
             Grid.Row="0"
             HorizontalAlignment="Left"
-            Orientation = "Horizontal">
+            Orientation = "Horizontal"
+            Margin="5"
+            >
             <Button 
                 Width="30" 
                 Name="StartSwitchButton"
-                Click="StartSwitchClick">
+                Click="StartSwitchClick"
+                Margin="5 0"
+                >
                 <fa:ImageAwesome Icon="Play" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
             </Button>
             <Button 
@@ -40,10 +44,13 @@
         <StackPanel 
             Grid.Row="0"
             HorizontalAlignment="Right"
-            Orientation = "Horizontal">
+            Orientation = "Horizontal"
+            Margin="5"
+            >
             <Button 
                 Width="30" 
                 Name="ClearCamButton"
+                Margin="5 0"
                 Click="ClearCamClick">
                 <fa:ImageAwesome Icon="Refresh" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
             </Button>
@@ -68,7 +75,16 @@
                 AutoGenerateColumns="False" 
                 Grid.Column="0" 
                 CanUserResizeColumns="False"
-                Name="DeviceTable">
+                Name="DeviceTable"
+                IsReadOnly="True"
+                >
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <EventSetter Event="MouseDoubleClick" Handler="DeviceRecordDoubleClick"/>
+                    </Style>
+                </DataGrid.RowStyle>
+
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn Header="Running" Binding="{Binding Path=IsOpened, Mode=OneWay}" Width="15*"/>
                     <DataGridTextColumn Header="Name"  Binding="{Binding Path=Name, Mode=OneWay}" Width="45*"/>
@@ -82,7 +98,9 @@
                 AutoGenerateColumns="False"
                 Grid.Column="1"
                 CanUserResizeColumns="False"
-                Name="CamTable">
+                Name="CamTable"
+                IsReadOnly="True"
+                >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="MAC Address" Binding="{Binding PhysicalAddress}" Width="30*"></DataGridTextColumn>
                     <DataGridTextColumn Header="Device" Binding="{Binding Device}" Width="60*"></DataGridTextColumn>
@@ -96,22 +114,24 @@
                 ItemsSource="{Binding}" 
                 AutoGenerateColumns="False" 
                 CanUserResizeColumns="False"
-                Name="StatisticsTable">
+                Name="StatisticsTable"
+                IsReadOnly="True"
+                >
                 
                 <DataGrid.Resources>
-                    <local:StatisticsConverter x:Key="StatsRecordConverter" />
+                    <converters:StatisticsConverter x:Key="StatisticsConverter" />
                 </DataGrid.Resources>
                 
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Device" Binding="{Binding Path=Name, Mode=OneWay}" Width="15*"/>
-                    <DataGridTextColumn Header="TCP" Binding="{Binding Path=Statistics[TCP], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
-                    <DataGridTextColumn Header="UDP" Binding="{Binding Path=Statistics[UDP], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
-                    <DataGridTextColumn Header="ICMPv4" Binding="{Binding Path=Statistics[ICMPv4], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
-                    <DataGridTextColumn Header="ICMPv6" Binding="{Binding Path=Statistics[ICMPv6], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
-                    <DataGridTextColumn Header="IPv4" Binding="{Binding Path=Statistics[IPv4], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
-                    <DataGridTextColumn Header="IPv6" Binding="{Binding Path=Statistics[IPv6], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
-                    <DataGridTextColumn Header="ARP" Binding="{Binding Path=Statistics[ARP], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
-                    <DataGridTextColumn Header="LLDP" Binding="{Binding Path=Statistics[LLDP], Mode=OneWay, Converter={StaticResource StatsRecordConverter}}" Width="5*"/>
+                    <DataGridTextColumn Header="TCP" Binding="{Binding Path=Statistics[TCP], Mode=OneWay, Converter={StaticResource StatisticsConverter}}" Width="5*"/>
+                    <DataGridTextColumn Header="UDP" Binding="{Binding Path=Statistics[UDP], Mode=OneWay, Converter={StaticResource StatisticsConverter}}" Width="5*"/>
+                    <DataGridTextColumn Header="ICMPv4" Binding="{Binding Path=Statistics[ICMPv4], Mode=OneWay, Converter={StaticResource StatisticsConverter}}" Width="5*"/>
+                    <DataGridTextColumn Header="ICMPv6" Binding="{Binding Path=Statistics[ICMPv6], Mode=OneWay, Converter={StaticResource StatisticsConverter}}" Width="5*"/>
+                    <DataGridTextColumn Header="IPv4" Binding="{Binding Path=Statistics[IPv4], Mode=OneWay, Converter={StaticResource StatisticsConverter}}" Width="5*"/>
+                    <DataGridTextColumn Header="IPv6" Binding="{Binding Path=Statistics[IPv6], Mode=OneWay, Converter={StaticResource StatisticsConverter}}" Width="5*"/>
+                    <DataGridTextColumn Header="ARP" Binding="{Binding Path=Statistics[ARP], Mode=OneWay, Converter={StaticResource StatisticsConverter}}" Width="5*"/>
+                    <DataGridTextColumn Header="LLDP" Binding="{Binding Path=Statistics[LLDP], Mode=OneWay, Converter={StaticResource StatisticsConverter}}" Width="5*"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

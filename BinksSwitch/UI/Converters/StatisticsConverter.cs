@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Windows.Data;
 using BinksSwitch.Network.Entities;
 
-namespace BinksSwitch.UI
+namespace BinksSwitch.UI.Converters
 {
     public class StatisticsConverter : IValueConverter
     {
