@@ -64,7 +64,7 @@ namespace BinksSwitch.Network
         {
             var senderDevice = (Device) sender;
 
-            if (!senderDevice.PassedFirewallRules(Direction.In, eth))
+            if (!senderDevice.PassedFirewall(Direction.In, eth))
             {
                 this.Log(new SyslogMessage(Severity.Debug, $"Packet thrown away by firewall on input"));
                 return;
@@ -76,7 +76,7 @@ namespace BinksSwitch.Network
 
                 if (record.Device.Name != senderDevice.Name)
                 {
-                    if (record.Device.PassedFirewallRules(Direction.Out, eth))
+                    if (record.Device.PassedFirewall(Direction.Out, eth))
                     {
                         record.Device.SendPacket(eth);
                     }
@@ -93,7 +93,7 @@ namespace BinksSwitch.Network
                 {
                     if (device.Name != senderDevice.Name)
                     {
-                        if (device.PassedFirewallRules(Direction.Out, eth))
+                        if (device.PassedFirewall(Direction.Out, eth))
                         {
                             device.SendPacket(eth);
                         }
@@ -160,8 +160,6 @@ namespace BinksSwitch.Network
             {
                 device.Broadcast(message);
             }
-
-            Console.WriteLine(message);
         }
     }
 }

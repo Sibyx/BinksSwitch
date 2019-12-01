@@ -55,8 +55,8 @@ namespace BinksSwitch.UI
             InlineTry(() => rule.DestinationIp = IPAddress.Parse(DestinationIpTextBox.Text));
             InlineTry(() => rule.SourceMac = PhysicalAddress.Parse(SourceMacTextBox.Text));
             InlineTry(() => rule.SourceIp = IPAddress.Parse(SourceIpTextBox.Text));
-            InlineTry(() => rule.DestinationPort = Convert.ToUInt16(DestinationPortTextBox.Text));
-            InlineTry(() => rule.SourcePort = Convert.ToUInt16(SourcePortTextBox.Text));
+            InlineTry(() => rule.DestinationPort = DestinationPortTextBox.Text.Length != 0 ? Convert.ToUInt16(DestinationPortTextBox.Text) : (ushort?) null);
+            InlineTry(() => rule.SourcePort = SourcePortTextBox.Text.Length != 0 ? Convert.ToUInt16(SourcePortTextBox.Text) : (ushort?) null);
 
             _device.FirewallRules.Add(rule);
             this.Close();

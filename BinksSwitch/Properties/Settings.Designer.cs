@@ -103,5 +103,17 @@ namespace BinksSwitch.Properties {
                 this["SyslogServerPort"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsWhitelist {
+            get {
+                return ((bool)(this["IsWhitelist"]));
+            }
+            set {
+                this["IsWhitelist"] = value;
+            }
+        }
     }
 }

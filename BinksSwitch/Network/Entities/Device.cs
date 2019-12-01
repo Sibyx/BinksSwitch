@@ -177,7 +177,7 @@ namespace BinksSwitch.Network.Entities
 
                 Task.Run((() =>
                 {
-                    if (this.PassedFirewallRules(Direction.In, eth))
+                    if (this.PassedFirewall(Direction.In, eth))
                     {
                         Received++;
                         this.ProcessStatistics(Direction.In, eth);
@@ -215,19 +215,17 @@ namespace BinksSwitch.Network.Entities
             return true;
         }
 
-        public bool PassedFirewallRules(Direction direction, EthernetPacket packet)
+        public bool PassedFirewall(Direction direction, EthernetPacket packet)
         {
-            var passed = true;
-
             foreach (var rule in FirewallRules.Where(rule => rule.RuleDirection == null || direction.Equals(rule.RuleDirection) ))
             {
                 if (rule.IsMatch(packet))
                 {
-                    passed = rule.RuleOperation.Equals(FirewallRule.Operation.Permit);
+                    return rule.RuleOperation.Equals(FirewallRule.Operation.Permit);
                 }
             }
 
-            return passed;
+            return Properties.Settings.Default.IsWhitelist;
         }
 
         private void ProcessStatistics(Direction direction, EthernetPacket packet)

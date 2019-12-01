@@ -1,3 +1,9 @@
+## 0.4.0 : 01.12.2019
+
+- **Change**: Firewall redesigned to first-fit
+- **Change**: Firewall rule checking using validation stack (`Stack<Func<bool>>`)
+- **Change**: Source and destination port is now nullable because of [ICMP Reply messsage](https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol)
+
 ## 0.3.0 : 21.11.2019
 
 - **Feature**: Firewall
